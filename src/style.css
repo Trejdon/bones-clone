@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .cell {
+    @apply w-32 h-32 border-2 border-red-300 flex items-center justify-center text-4xl;
+  }
+}
