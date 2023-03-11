@@ -2,7 +2,6 @@ export const rollDie = (): number => {
   return Math.floor(Math.random() * 6 + 1);
 };
 
-// TODO: Make unit tests for this
 export const scoreRollTuple = (rollTuple: [number, number]): number => {
   const [value, count] = rollTuple;
 
@@ -16,7 +15,6 @@ export const scoreRollTuple = (rollTuple: [number, number]): number => {
   }
 };
 
-// TODO: Make unit tests for this
 export const calculateColumnScore = (columnArr: number[]): number => {
   const uniqueArr = [...new Set(columnArr)];
   const tupleArr: [number, number][] = uniqueArr.map((value) => {
