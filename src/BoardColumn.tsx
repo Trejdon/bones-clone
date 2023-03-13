@@ -1,41 +1,45 @@
 import { FC } from "react";
+import { MoveType } from "./App";
 import { calculateColumnScore } from "./gameUtils";
 
 type BoardColumnProps = {
   board: [number, number, number][];
   columnIndex: number;
   currentRoll: number;
-  setPlayerBoard: React.Dispatch<
-    React.SetStateAction<[number, number, number][]>
-  >;
+  playerId: string;
+  setLastMove: React.Dispatch<React.SetStateAction<MoveType | undefined>>;
   setRoll: React.Dispatch<React.SetStateAction<number>>;
-  setCanRoll: React.Dispatch<React.SetStateAction<boolean>>;
+  setStatus: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const BoardColumn: FC<BoardColumnProps> = ({
   board,
   columnIndex,
   currentRoll,
-  setPlayerBoard,
+  playerId,
+  setLastMove,
   setRoll,
-  setCanRoll,
+  setStatus,
 }) => {
   const currentColumn = board[columnIndex];
 
-  function handleColumnClick(
-    board: [number, number, number][],
-    columnIndex: number
-  ): void {
-    const indexToUpdate = board[columnIndex].indexOf(0);
-    const columnToUpdate: [number, number, number] = [...board[columnIndex]];
-    const updatedBoard = [...board];
+  function handleColumnClick(index: number): void {
+    //   const indexToUpdate = board[columnIndex].indexOf(0);
+    //   const columnToUpdate: [number, number, number] = [...board[columnIndex]];
+    //   const updatedBoard = [...board];
 
-    columnToUpdate[indexToUpdate] = currentRoll;
-    updatedBoard[columnIndex] = columnToUpdate;
+    //   columnToUpdate[indexToUpdate] = currentRoll;
+    //   updatedBoard[columnIndex] = columnToUpdate;
 
-    setPlayerBoard(updatedBoard);
+    // setPlayerBoard(updatedBoard);
+
+    setLastMove({
+      playerId,
+      columnSelected: index,
+      roll: currentRoll,
+    });
     setRoll(0);
-    setCanRoll(true);
+    setStatus("PROCESSING");
   }
 
   return (
@@ -51,7 +55,7 @@ const BoardColumn: FC<BoardColumnProps> = ({
       {currentColumn.includes(0) && (
         <button
           className="bg-emerald-500 h-12 w-24 rounded-lg"
-          onClick={() => handleColumnClick(board, columnIndex)}
+          onClick={() => handleColumnClick(columnIndex)}
         >
           +
         </button>
