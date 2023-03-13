@@ -28,3 +28,12 @@ export const calculateColumnScore = (columnArr: number[]): number => {
 
   return score;
 };
+
+export const calculateBoardScore = (board: [number, number, number][]): number => {
+  const columnScoreArr = board.map((column: [number, number, number]) =>
+    calculateColumnScore(column)
+  );
+  const total = columnScoreArr.reduce((score, total) => score + total, 0);
+
+  return total;
+};

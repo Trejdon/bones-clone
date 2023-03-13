@@ -1,34 +1,33 @@
 import { FC } from "react";
+import { MoveType, PlayerType } from "./App";
 import BoardColumn from "./BoardColumn";
 import DieRoll from "./DieRoll";
-import { rollDie } from "./gameUtils";
 
 type PlayerBoardProps = {
-  board: [number, number, number][];
-  canRoll: boolean;
+  player: PlayerType;
   currentRoll: number;
   handleRollDie: () => void;
-  setPlayerBoard: React.Dispatch<
-    React.SetStateAction<[number, number, number][]>
-  >;
+  setLastMove: React.Dispatch<React.SetStateAction<MoveType | undefined>>;
   setRoll: React.Dispatch<React.SetStateAction<number>>;
-  setCanRoll: React.Dispatch<React.SetStateAction<boolean>>;
+  setStatus: React.Dispatch<React.SetStateAction<string>>;
+  status: string;
 };
 
-const PlayerBoard = ({
-  board,
-  canRoll,
+const PlayerBoard: FC<PlayerBoardProps> = ({
+  player,
   currentRoll,
   handleRollDie,
-  setPlayerBoard,
+  setLastMove,
   setRoll,
-  setCanRoll,
-}: PlayerBoardProps) => {
+  setStatus,
+  status,
+}) => {
+  const { board, id, score } = player;
   return (
     <div className="board">
       <DieRoll
         roll={currentRoll}
-        canRoll={canRoll}
+        canRoll={status === id}
         handleRollDie={handleRollDie}
       />
       <div className="grid grid-cols-3 gap-4 w-fit">
@@ -37,14 +36,19 @@ const PlayerBoard = ({
           return (
             <BoardColumn
               board={board}
-              setCanRoll={setCanRoll}
+              playerId={id}
+              setStatus={setStatus}
               setRoll={setRoll}
               columnIndex={index}
               currentRoll={currentRoll}
-              setPlayerBoard={setPlayerBoard}
+              setLastMove={setLastMove}
+              key={index}
             />
           );
         })}
+      </div>
+      <div className="player-score w-24 h-24 border-2 border-green-700 text-4xl text-center">
+        {score}
       </div>
     </div>
   );
