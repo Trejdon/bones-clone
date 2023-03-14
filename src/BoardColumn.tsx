@@ -1,12 +1,13 @@
 import { FC } from "react";
-import { MoveType } from "./App";
+import { MoveType, BoardType } from "./App";
 import { calculateColumnScore } from "./gameUtils";
 
 type BoardColumnProps = {
-  board: [number, number, number][];
+  board: BoardType;
   columnIndex: number;
   currentRoll: number;
   playerId: string;
+  status: string;
   setLastMove: React.Dispatch<React.SetStateAction<MoveType | undefined>>;
   setRoll: React.Dispatch<React.SetStateAction<number>>;
   setStatus: React.Dispatch<React.SetStateAction<string>>;
@@ -20,19 +21,11 @@ const BoardColumn: FC<BoardColumnProps> = ({
   setLastMove,
   setRoll,
   setStatus,
+  status,
 }) => {
   const currentColumn = board[columnIndex];
 
   function handleColumnClick(index: number): void {
-    //   const indexToUpdate = board[columnIndex].indexOf(0);
-    //   const columnToUpdate: [number, number, number] = [...board[columnIndex]];
-    //   const updatedBoard = [...board];
-
-    //   columnToUpdate[indexToUpdate] = currentRoll;
-    //   updatedBoard[columnIndex] = columnToUpdate;
-
-    // setPlayerBoard(updatedBoard);
-
     setLastMove({
       playerId,
       columnSelected: index,
@@ -52,7 +45,7 @@ const BoardColumn: FC<BoardColumnProps> = ({
         <div className="cell">{!!currentColumn[1] ? currentColumn[1] : ""}</div>
         <div className="cell">{!!currentColumn[2] ? currentColumn[2] : ""}</div>
       </div>
-      {currentColumn.includes(0) && (
+      {currentColumn.includes(0) && status === playerId && (
         <button
           className="bg-emerald-500 h-12 w-24 rounded-lg"
           onClick={() => handleColumnClick(columnIndex)}

@@ -1,3 +1,5 @@
+import { BoardType, ColumnType, MoveType } from "./App";
+
 export const rollDie = (): number => {
   return Math.floor(Math.random() * 6 + 1);
 };
@@ -15,7 +17,7 @@ export const scoreRollTuple = (rollTuple: [number, number]): number => {
   }
 };
 
-export const calculateColumnScore = (columnArr: number[]): number => {
+export const calculateColumnScore = (columnArr: ColumnType): number => {
   const uniqueArr = [...new Set(columnArr)];
   const tupleArr: [number, number][] = uniqueArr.map((value) => {
     const count = columnArr.filter((element) => element === value).length;
@@ -29,11 +31,33 @@ export const calculateColumnScore = (columnArr: number[]): number => {
   return score;
 };
 
-export const calculateBoardScore = (board: [number, number, number][]): number => {
-  const columnScoreArr = board.map((column: [number, number, number]) =>
+export const calculateBoardScore = (board: BoardType): number => {
+  const columnScoreArr = board.map((column: ColumnType) =>
     calculateColumnScore(column)
   );
   const total = columnScoreArr.reduce((score, total) => score + total, 0);
 
   return total;
+};
+
+export const createUpdatedBoard = (board: BoardType, move: MoveType) => {
+  const columnToUpdate: ColumnType = [...board[move.columnSelected]];
+  const indexToUpdate = columnToUpdate.indexOf(0);
+  columnToUpdate[indexToUpdate] = move.roll;
+  board[move.columnSelected] = columnToUpdate;
+  return board;
+};
+
+export const cancelOpponentBoard = (
+  board: BoardType,
+  move: MoveType
+): BoardType => {
+  const { roll, columnSelected } = move;
+  const columnToUpdate: ColumnType = [...board[columnSelected]];
+  const mappedColumn: ColumnType = columnToUpdate.map((element) =>
+    element === roll ? 0 : element
+  );
+  board[columnSelected] = mappedColumn;
+
+  return board;
 };
