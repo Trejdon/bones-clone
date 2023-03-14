@@ -42,6 +42,7 @@ const PlayerBoard: FC<PlayerBoardProps> = ({
               columnIndex={index}
               currentRoll={currentRoll}
               setLastMove={setLastMove}
+              status={status}
               key={index}
             />
           );
