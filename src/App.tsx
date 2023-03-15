@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import PlayerBoard from "./PlayerBoard";
+import DieRoll from "./DieRoll";
 import {
   calculateBoardScore,
   rollDie,
@@ -46,11 +47,10 @@ const App = () => {
       [0, 0, 0],
     ],
     score: 0,
-    isHuman: false,
+    isHuman: true,
   });
   const [status, setStatus] = useState(playerOneData.id);
   const [lastMove, setLastMove] = useState<MoveType | undefined>(undefined);
-  const [winner, setWinner] = useState("");
 
   const PLAYERS = [playerOneData.id, playerTwoData.id];
 
@@ -101,8 +101,11 @@ const App = () => {
 
       if (!hasZerosArr.includes(true)) {
         setStatus("GAME_OVER");
-        setWinner(currentPlayerData.name);
-        console.log(`Game over, ${currentPlayerData.name} wins!`);
+        const highScore =
+          currentPlayerData.score > otherPlayerData.score
+            ? currentPlayerData.name
+            : otherPlayerData.name;
+        console.log(`Game over, ${highScore} wins!`);
       } else {
         // Update status for next player turn
         setStatus(PLAYERS.filter((player) => player !== lastMove.playerId)[0]);
@@ -112,26 +115,51 @@ const App = () => {
 
   return (
     <div className="p-0 m-0">
-      <div id="game">
-        <div className="flex justify-around">
+      <div id="game" className="grid grid-cols-3 h-screen">
+        {/* Player one avatar, score, and dice roller */}
+        <div className="flex flex-col justify-start items-center my-12">
+          <DieRoll
+            roll={roll}
+            canRoll={status === playerOneData.id}
+            handleRollDie={handleRollDie}
+          />
+          <div className="border-4 border-red-600 w-1/2 text-4xl text-center my-4">
+            <div className="">{playerOneData.name}</div>
+            <div className="">{playerOneData.score}</div>
+          </div>
+        </div>
+        {/* Game boards for both players */}
+        <div className="flex flex-col items-center justify-around bg-yellow-100">
           <PlayerBoard
+            inverted={true}
             player={playerOneData}
             currentRoll={roll}
-            handleRollDie={handleRollDie}
             setLastMove={setLastMove}
             setRoll={setRoll}
             setStatus={setStatus}
             status={status}
           />
           <PlayerBoard
+            inverted={false}
             player={playerTwoData}
             currentRoll={roll}
-            handleRollDie={handleRollDie}
             setLastMove={setLastMove}
             setRoll={setRoll}
             setStatus={setStatus}
             status={status}
           />
+        </div>
+        {/* Player two avatar, score, and dice roller */}
+        <div className="flex flex-col-reverse items-center my-12">
+          <DieRoll
+            roll={roll}
+            canRoll={status === playerTwoData.id}
+            handleRollDie={handleRollDie}
+          />
+          <div className="border-4 border-red-600 w-1/2 text-4xl text-center mx-auto my-4">
+            <div className="">{playerTwoData.name}</div>
+            <div className="">{playerTwoData.score}</div>
+          </div>
         </div>
       </div>
     </div>

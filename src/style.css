@@ -2,8 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    @apply bg-black text-white
+  }
+}
+
 @layer components {
   .cell {
-    @apply w-32 h-32 border-2 border-red-300 flex items-center justify-center text-4xl;
+    @apply w-28 h-24 flex items-center justify-center text-4xl bg-slate-800;
   }
 }
