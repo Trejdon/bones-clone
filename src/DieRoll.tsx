@@ -8,23 +8,23 @@ type DieRollProps = {
 
 const DieRoll: FC<DieRollProps> = ({ roll, canRoll, handleRollDie }) => {
   const shouldDisplayRoll = canRoll && roll > 0;
+  const rollClass = shouldDisplayRoll ? "" : "hidden";
   const shouldDisplayButton = canRoll && roll === 0;
+  const buttonClass = shouldDisplayButton ? "" : "hidden";
   return (
     <div
       id="die-roll"
-      className="max-w-sm border-2 border-violet-900 rounded-sm h-32 flex flex-col justify-center items-center"
+      className="w-1/2 mx-auto border-8 border-gray-400 rounded-sm h-32 flex flex-col justify-center items-center"
     >
-      <div id="roll" className="text-4xl p-5">
-        {shouldDisplayRoll && roll}
+      <div id="roll" className={`text-4xl p-5 ${rollClass}`}>
+        {roll}
       </div>
-      {shouldDisplayButton && (
-        <button
-          className="bg-emerald-500 h-12 w-24 rounded-lg"
-          onClick={handleRollDie}
-        >
-          Roll
-        </button>
-      )}
+      <button
+        className={`h-12 w-24 bg-red-800 rounded-lg ${buttonClass}`}
+        onClick={handleRollDie}
+      >
+        Roll
+      </button>
     </div>
   );
 };

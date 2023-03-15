@@ -1,11 +1,13 @@
 import { FC } from "react";
-import { MoveType, BoardType } from "./App";
+import { MoveType, ColumnType } from "./App";
 import { calculateColumnScore } from "./gameUtils";
 
 type BoardColumnProps = {
-  board: BoardType;
+  column: ColumnType;
   columnIndex: number;
   currentRoll: number;
+  isHuman: boolean;
+  inverted: boolean;
   playerId: string;
   status: string;
   setLastMove: React.Dispatch<React.SetStateAction<MoveType | undefined>>;
@@ -14,18 +16,18 @@ type BoardColumnProps = {
 };
 
 const BoardColumn: FC<BoardColumnProps> = ({
-  board,
+  column,
   columnIndex,
   currentRoll,
   playerId,
+  isHuman,
+  inverted,
   setLastMove,
   setRoll,
   setStatus,
   status,
 }) => {
-  const currentColumn = board[columnIndex];
-
-  function handleColumnClick(index: number): void {
+  const handleColumnClick = (index: number): void => {
     setLastMove({
       playerId,
       columnSelected: index,
@@ -33,26 +35,31 @@ const BoardColumn: FC<BoardColumnProps> = ({
     });
     setRoll(0);
     setStatus("PROCESSING");
-  }
+  };
+  const flexDir = inverted ? "flex-col-reverse" : "flex-col";
+  const hiddenClass = status === playerId ? "" : "hidden";
+  const showButton = isHuman && currentRoll !== 0 && column.includes(0);
 
   return (
-    <div className="border-blue-600 border-2 w-44 flex flex-col items-center gap-4">
-      <div className="h-12 w-12 border-red-500 border-2 text-center">
-        {calculateColumnScore(currentColumn)}
+    <div className={`flex ${flexDir} items-center gap-4`}>
+      <div className="h-12 w-12 border-red-500 border-2 text-black text-2xl text-center">
+        {calculateColumnScore(column)}
       </div>
-      <div className="column grid grid-rows-3 gap-4 justify-center">
-        <div className="cell">{!!currentColumn[0] ? currentColumn[0] : ""}</div>
-        <div className="cell">{!!currentColumn[1] ? currentColumn[1] : ""}</div>
-        <div className="cell">{!!currentColumn[2] ? currentColumn[2] : ""}</div>
+      <div className="grid grid-rows-3 gap-4 justify-center">
+        <div className="cell">{!!column[0] && column[0]}</div>
+        <div className="cell">{!!column[1] && column[1]}</div>
+        <div className="cell">{!!column[2] && column[2]}</div>
       </div>
-      {currentColumn.includes(0) && status === playerId && (
-        <button
-          className="bg-emerald-500 h-12 w-24 rounded-lg"
-          onClick={() => handleColumnClick(columnIndex)}
-        >
-          +
-        </button>
-      )}
+      <div className="h-12">
+        {showButton && (
+          <button
+            className={`bg-red-800 h-12 w-24 rounded-lg ${hiddenClass}`}
+            onClick={() => handleColumnClick(columnIndex)}
+          >
+            +
+          </button>
+        )}
+      </div>
     </div>
   );
 };
