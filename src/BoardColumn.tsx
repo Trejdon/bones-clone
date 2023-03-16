@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { MoveType, ColumnType } from "./App";
+import Cell from "./Cell";
 import { calculateColumnScore } from "./gameUtils";
 
 type BoardColumnProps = {
@@ -41,19 +42,21 @@ const BoardColumn: FC<BoardColumnProps> = ({
   const showButton = isHuman && currentRoll !== 0 && column.includes(0);
 
   return (
-    <div className={`flex ${flexDir} items-center gap-4`}>
-      <div className="h-12 w-12 border-red-500 border-2 text-black text-2xl text-center">
+    <div className={`flex ${flexDir} items-center gap-2`}>
+      <div className="h-10 w-12 text-black text-2xl flex justify-center items-center">
         {calculateColumnScore(column)}
       </div>
-      <div className="grid grid-rows-3 gap-4 justify-center">
-        <div className="cell">{!!column[0] && column[0]}</div>
-        <div className="cell">{!!column[1] && column[1]}</div>
-        <div className="cell">{!!column[2] && column[2]}</div>
+      <div className="grid grid-rows-3 gap-2 justify-center">
+        {column.map((value, index) => {
+          const count =
+            column.filter((element) => element === value).length - 1;
+          return <Cell value={value} count={count} key={index} />;
+        })}
       </div>
       <div className="h-12">
         {showButton && (
           <button
-            className={`bg-red-800 h-12 w-24 rounded-lg ${hiddenClass}`}
+            className={`bg-red-800 h-10 w-20 rounded-lg ${hiddenClass}`}
             onClick={() => handleColumnClick(columnIndex)}
           >
             +

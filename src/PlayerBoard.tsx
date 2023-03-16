@@ -24,7 +24,7 @@ const PlayerBoard: FC<PlayerBoardProps> = ({
   const { board, id, isHuman } = player;
   return (
     <div className="board">
-      <div className="grid grid-cols-3 gap-4 w-fit">
+      <div className="grid grid-cols-3 gap-2 w-fit">
         {board.map((column, index) => {
           return (
             <BoardColumn
