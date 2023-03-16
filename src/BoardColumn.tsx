@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { MoveType, ColumnType } from "./App";
+import Cell from "./Cell";
 import { calculateColumnScore } from "./gameUtils";
 
 type BoardColumnProps = {
@@ -42,42 +43,20 @@ const BoardColumn: FC<BoardColumnProps> = ({
 
   return (
     <div className={`flex ${flexDir} items-center gap-2`}>
-      <div className="h-12 w-12 text-black text-3xl text-center">
+      <div className="h-10 w-12 text-black text-2xl flex justify-center items-center">
         {calculateColumnScore(column)}
       </div>
-      <div className="grid grid-rows-3 gap-4 justify-center">
-        <div className="cell">
-          {!!column[0] && (
-            <img
-              className="h-16 border-2 border-zinc-900 rounded-md bg-white"
-              src={`./images/${column[0]}.svg`}
-              alt="die roll"
-            />
-          )}
-        </div>
-        <div className="cell">
-          {!!column[1] && (
-            <img
-              className="h-16 border-2 border-zinc-900 rounded-md bg-white"
-              src={`./images/${column[1]}.svg`}
-              alt="die roll"
-            />
-          )}
-        </div>
-        <div className="cell">
-          {!!column[2] && (
-            <img
-              className="h-16 border-2 border-zinc-900 rounded-md bg-white"
-              src={`./images/${column[2]}.svg`}
-              alt="die roll"
-            />
-          )}
-        </div>
+      <div className="grid grid-rows-3 gap-2 justify-center">
+        {column.map((value, index) => {
+          const count =
+            column.filter((element) => element === value).length - 1;
+          return <Cell value={value} count={count} key={index} />;
+        })}
       </div>
       <div className="h-12">
         {showButton && (
           <button
-            className={`bg-red-800 h-12 w-24 rounded-lg ${hiddenClass}`}
+            className={`bg-red-800 h-10 w-20 rounded-lg ${hiddenClass}`}
             onClick={() => handleColumnClick(columnIndex)}
           >
             +
