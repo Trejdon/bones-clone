@@ -41,14 +41,38 @@ const BoardColumn: FC<BoardColumnProps> = ({
   const showButton = isHuman && currentRoll !== 0 && column.includes(0);
 
   return (
-    <div className={`flex ${flexDir} items-center gap-4`}>
-      <div className="h-12 w-12 border-red-500 border-2 text-black text-2xl text-center">
+    <div className={`flex ${flexDir} items-center gap-2`}>
+      <div className="h-12 w-12 text-black text-3xl text-center">
         {calculateColumnScore(column)}
       </div>
       <div className="grid grid-rows-3 gap-4 justify-center">
-        <div className="cell">{!!column[0] && column[0]}</div>
-        <div className="cell">{!!column[1] && column[1]}</div>
-        <div className="cell">{!!column[2] && column[2]}</div>
+        <div className="cell">
+          {!!column[0] && (
+            <img
+              className="h-16 border-2 border-zinc-900 rounded-md bg-white"
+              src={`./images/${column[0]}.svg`}
+              alt="die roll"
+            />
+          )}
+        </div>
+        <div className="cell">
+          {!!column[1] && (
+            <img
+              className="h-16 border-2 border-zinc-900 rounded-md bg-white"
+              src={`./images/${column[1]}.svg`}
+              alt="die roll"
+            />
+          )}
+        </div>
+        <div className="cell">
+          {!!column[2] && (
+            <img
+              className="h-16 border-2 border-zinc-900 rounded-md bg-white"
+              src={`./images/${column[2]}.svg`}
+              alt="die roll"
+            />
+          )}
+        </div>
       </div>
       <div className="h-12">
         {showButton && (

@@ -10,6 +10,6 @@
 
 @layer components {
   .cell {
-    @apply w-28 h-24 flex items-center justify-center text-4xl bg-slate-800;
+    @apply w-24 h-24 flex items-center justify-center text-4xl bg-slate-700;
   }
 }
