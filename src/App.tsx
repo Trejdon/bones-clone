@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import PlayerBoard from "./PlayerBoard";
 import DieRoll from "./DieRoll";
+import Modal from "./Modal";
 import {
   calculateBoardScore,
   rollDie,
@@ -27,6 +28,7 @@ export type PlayerType = {
 
 const App = () => {
   const [roll, setRoll] = useState<number>(0);
+  const [showModal, setShowModal] = useState(true);
   const [playerOneData, setPlayerOneData] = useState<PlayerType>({
     id: self.crypto.randomUUID(),
     name: "Player",
@@ -47,10 +49,11 @@ const App = () => {
       [0, 0, 0],
     ],
     score: 0,
-    isHuman: true,
+    isHuman: false,
   });
   const [status, setStatus] = useState(playerOneData.id);
   const [lastMove, setLastMove] = useState<MoveType | undefined>(undefined);
+  const [winner, setWinner] = useState("WINNER");
 
   const PLAYERS = [playerOneData.id, playerTwoData.id];
 
@@ -105,7 +108,9 @@ const App = () => {
           currentPlayerData.score > otherPlayerData.score
             ? currentPlayerData.name
             : otherPlayerData.name;
-        console.log(`Game over, ${highScore} wins!`);
+        console.log(`Game over, ${highScore} wins`);
+        setWinner(highScore);
+        setShowModal(true);
       } else {
         // Update status for next player turn
         setStatus(PLAYERS.filter((player) => player !== lastMove.playerId)[0]);
@@ -114,7 +119,7 @@ const App = () => {
   }, [status]);
 
   return (
-    <div className="p-0 m-0">
+    <div className="p-0 m-0 relative">
       <div id="game" className="grid grid-cols-3 h-screen">
         {/* Player one avatar, score, and dice roller */}
         <div className="flex flex-col justify-start items-center my-12">
@@ -162,6 +167,14 @@ const App = () => {
           </div>
         </div>
       </div>
+      {showModal && (
+        <Modal>
+          <div>
+            <h2>{`${winner} wins!`}</h2>
+            <button onClick={() => window.location.reload()}>Play again</button>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };
