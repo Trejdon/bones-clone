@@ -21,7 +21,7 @@ const Modal: FC<PropsWithChildren> = ({ children }) => {
     };
   }, []);
 
-  return createPortal(<div>{children}</div>, elRef.current);
+  return createPortal(<div className="modal">{children}</div>, elRef.current);
 };
 
 export default Modal;

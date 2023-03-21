@@ -28,7 +28,7 @@ export type PlayerType = {
 
 const App = () => {
   const [roll, setRoll] = useState<number>(0);
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [playerOneData, setPlayerOneData] = useState<PlayerType>({
     id: self.crypto.randomUUID(),
     name: "Player",
@@ -49,11 +49,11 @@ const App = () => {
       [0, 0, 0],
     ],
     score: 0,
-    isHuman: false,
+    isHuman: true,
   });
   const [status, setStatus] = useState(playerOneData.id);
   const [lastMove, setLastMove] = useState<MoveType | undefined>(undefined);
-  const [winner, setWinner] = useState("WINNER");
+  const [winner, setWinner] = useState("");
 
   const PLAYERS = [playerOneData.id, playerTwoData.id];
 
@@ -169,10 +169,8 @@ const App = () => {
       </div>
       {showModal && (
         <Modal>
-          <div>
-            <h2>{`${winner} wins!`}</h2>
-            <button onClick={() => window.location.reload()}>Play again</button>
-          </div>
+          <h2>{`${winner} wins!`}</h2>
+          <button onClick={() => window.location.reload()} className="h-10 w-32 bg-red-800 rounded-lg">Play again</button>
         </Modal>
       )}
     </div>
