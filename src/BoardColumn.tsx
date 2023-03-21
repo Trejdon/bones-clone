@@ -34,7 +34,6 @@ const BoardColumn: FC<BoardColumnProps> = ({
       columnSelected: index,
       roll: currentRoll,
     });
-    setRoll(0);
     setStatus("PROCESSING");
   };
   const flexDir = inverted ? "flex-col-reverse" : "flex-col";

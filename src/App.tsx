@@ -5,9 +5,10 @@ import DieRoll from "./DieRoll";
 import Modal from "./Modal";
 import {
   calculateBoardScore,
-  rollDie,
-  createUpdatedBoard,
   cancelOpponentBoard,
+  coinFlip,
+  createUpdatedBoard,
+  rollDie,
 } from "./gameUtils";
 
 export type MoveType = {
@@ -49,7 +50,7 @@ const App = () => {
       [0, 0, 0],
     ],
     score: 0,
-    isHuman: true,
+    isHuman: false,
   });
   const [status, setStatus] = useState(playerOneData.id);
   const [lastMove, setLastMove] = useState<MoveType | undefined>(undefined);
@@ -60,6 +61,8 @@ const App = () => {
   const handleRollDie = (): void => {
     setRoll(rollDie());
   };
+
+  console.log({ status });
 
   useEffect(() => {
     if (status === "PROCESSING") {
@@ -113,8 +116,37 @@ const App = () => {
         setShowModal(true);
       } else {
         // Update status for next player turn
+        setRoll(0);
         setStatus(PLAYERS.filter((player) => player !== lastMove.playerId)[0]);
       }
+    }
+
+    if (!playerTwoData.isHuman && status === playerTwoData.id) {
+      const dieRoll = rollDie();
+      setRoll(dieRoll);
+
+      // Function to analyze the computer board and "randomly" select an open column
+      const columnSelection = playerTwoData.board.reduce(
+        (result, currentColumn, currentIndex) => {
+          const colHasEmpty = currentColumn.includes(0);
+          if (colHasEmpty && result === 3) {
+            return currentIndex;
+          } else if (colHasEmpty) {
+            return coinFlip(result, currentIndex);
+          } else {
+            return result;
+          }
+        },
+        3
+      );
+
+      console.log({ columnSelection });
+      setLastMove({
+        playerId: playerTwoData.id,
+        columnSelected: columnSelection,
+        roll: dieRoll,
+      });
+      setStatus("PROCESSING");
     }
   }, [status]);
 
@@ -170,7 +202,12 @@ const App = () => {
       {showModal && (
         <Modal>
           <h2>{`${winner} wins!`}</h2>
-          <button onClick={() => window.location.reload()} className="h-10 w-32 bg-red-800 rounded-lg">Play again</button>
+          <button
+            onClick={() => window.location.reload()}
+            className="h-10 w-32 bg-red-800 rounded-lg"
+          >
+            Play again
+          </button>
         </Modal>
       )}
     </div>
