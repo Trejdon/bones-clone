@@ -67,3 +67,6 @@ export const coinFlip = (a: number, b: number): number => {
 
   return random100 <= 50 ? a : b;
 };
+
+export const sleep = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));

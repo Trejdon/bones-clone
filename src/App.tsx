@@ -9,6 +9,7 @@ import {
   coinFlip,
   createUpdatedBoard,
   rollDie,
+  sleep,
 } from "./gameUtils";
 
 export type MoveType = {
@@ -62,8 +63,6 @@ const App = () => {
     setRoll(rollDie());
   };
 
-  console.log({ status });
-
   useEffect(() => {
     if (status === "PROCESSING") {
       // Update player score from lastMove object
@@ -111,7 +110,7 @@ const App = () => {
           currentPlayerData.score > otherPlayerData.score
             ? currentPlayerData.name
             : otherPlayerData.name;
-        console.log(`Game over, ${highScore} wins`);
+
         setWinner(highScore);
         setShowModal(true);
       } else {
@@ -122,31 +121,33 @@ const App = () => {
     }
 
     if (!playerTwoData.isHuman && status === playerTwoData.id) {
-      const dieRoll = rollDie();
-      setRoll(dieRoll);
+      const aiRollAndSelection = async () => {
+        const randColSelection = playerTwoData.board.reduce(
+          (result, currentColumn, currentIndex) => {
+            const colHasEmpty = currentColumn.includes(0);
+            if (colHasEmpty && result === 3) {
+              return currentIndex;
+            } else if (colHasEmpty) {
+              return coinFlip(result, currentIndex);
+            } else {
+              return result;
+            }
+          },
+          3
+        );
 
-      // Function to analyze the computer board and "randomly" select an open column
-      const columnSelection = playerTwoData.board.reduce(
-        (result, currentColumn, currentIndex) => {
-          const colHasEmpty = currentColumn.includes(0);
-          if (colHasEmpty && result === 3) {
-            return currentIndex;
-          } else if (colHasEmpty) {
-            return coinFlip(result, currentIndex);
-          } else {
-            return result;
-          }
-        },
-        3
-      );
+        const dieRoll = rollDie();
+        setRoll(dieRoll);
+        await sleep(3000);
+        setLastMove({
+          playerId: playerTwoData.id,
+          columnSelected: randColSelection,
+          roll: dieRoll,
+        });
+        setStatus("PROCESSING");
+      };
 
-      console.log({ columnSelection });
-      setLastMove({
-        playerId: playerTwoData.id,
-        columnSelected: columnSelection,
-        roll: dieRoll,
-      });
-      setStatus("PROCESSING");
+      aiRollAndSelection();
     }
   }, [status]);
 
