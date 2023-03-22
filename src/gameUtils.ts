@@ -61,3 +61,12 @@ export const cancelOpponentBoard = (
 
   return board;
 };
+
+export const coinFlip = (a: number, b: number): number => {
+  const random100 = Math.floor(Math.random() * 100 + 1);
+
+  return random100 <= 50 ? a : b;
+};
+
+export const sleep = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));

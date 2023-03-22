@@ -4,12 +4,16 @@
 
 @layer base {
   html {
-    @apply bg-black text-white
+    @apply bg-black text-white;
   }
 }
 
 @layer components {
   .cell {
     @apply w-20 h-20 flex items-center justify-center bg-slate-700 rounded-md;
+  }
+
+  .modal {
+    @apply text-xl fixed top-1/2 left-1/2 w-5/12 max-w-[600] gap-2 h-28 max-h-[400] z-10 border-4 border-red-800 rounded-lg p-2 flex flex-col justify-center text-center items-center bg-slate-700 -translate-y-2/4 -translate-x-2/4;
   }
 }

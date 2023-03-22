@@ -5,9 +5,11 @@ import DieRoll from "./DieRoll";
 import Modal from "./Modal";
 import {
   calculateBoardScore,
-  rollDie,
-  createUpdatedBoard,
   cancelOpponentBoard,
+  coinFlip,
+  createUpdatedBoard,
+  rollDie,
+  sleep,
 } from "./gameUtils";
 
 export type MoveType = {
@@ -28,7 +30,7 @@ export type PlayerType = {
 
 const App = () => {
   const [roll, setRoll] = useState<number>(0);
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [playerOneData, setPlayerOneData] = useState<PlayerType>({
     id: self.crypto.randomUUID(),
     name: "Player",
@@ -53,7 +55,7 @@ const App = () => {
   });
   const [status, setStatus] = useState(playerOneData.id);
   const [lastMove, setLastMove] = useState<MoveType | undefined>(undefined);
-  const [winner, setWinner] = useState("WINNER");
+  const [winner, setWinner] = useState("");
 
   const PLAYERS = [playerOneData.id, playerTwoData.id];
 
@@ -108,13 +110,44 @@ const App = () => {
           currentPlayerData.score > otherPlayerData.score
             ? currentPlayerData.name
             : otherPlayerData.name;
-        console.log(`Game over, ${highScore} wins`);
+
         setWinner(highScore);
         setShowModal(true);
       } else {
         // Update status for next player turn
+        setRoll(0);
         setStatus(PLAYERS.filter((player) => player !== lastMove.playerId)[0]);
       }
+    }
+
+    if (!playerTwoData.isHuman && status === playerTwoData.id) {
+      const aiRollAndSelection = async () => {
+        const randColSelection = playerTwoData.board.reduce(
+          (result, currentColumn, currentIndex) => {
+            const colHasEmpty = currentColumn.includes(0);
+            if (colHasEmpty && result === 3) {
+              return currentIndex;
+            } else if (colHasEmpty) {
+              return coinFlip(result, currentIndex);
+            } else {
+              return result;
+            }
+          },
+          3
+        );
+
+        const dieRoll = rollDie();
+        setRoll(dieRoll);
+        await sleep(3000);
+        setLastMove({
+          playerId: playerTwoData.id,
+          columnSelected: randColSelection,
+          roll: dieRoll,
+        });
+        setStatus("PROCESSING");
+      };
+
+      aiRollAndSelection();
     }
   }, [status]);
 
@@ -169,10 +202,13 @@ const App = () => {
       </div>
       {showModal && (
         <Modal>
-          <div>
-            <h2>{`${winner} wins!`}</h2>
-            <button onClick={() => window.location.reload()}>Play again</button>
-          </div>
+          <h2>{`${winner} wins!`}</h2>
+          <button
+            onClick={() => window.location.reload()}
+            className="h-10 w-32 bg-red-800 rounded-lg"
+          >
+            Play again
+          </button>
         </Modal>
       )}
     </div>
