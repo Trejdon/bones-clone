@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Game from "./Game";
 import Main from "./Main";
 import Modal from "./Modal";
@@ -26,8 +27,15 @@ const App = () => {
 
   return (
     <div className="p-0 m-0 relative">
-      <Main />
-      {/* <Game setShowModal={setShowModal} setWinner={setWinner} /> */}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route
+            path="/play"
+            element={<Game setShowModal={setShowModal} setWinner={setWinner} />}
+          />
+        </Routes>
+      </BrowserRouter>
       {showModal && (
         <Modal>
           <h2>{`${winner} wins!`}</h2>

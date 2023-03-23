@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 const Main = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-yellow-100 text-black h-screen flex flex-col gap-4 items-center mx-48">
       <h1 className="text-5xl">🎲🦴 Bones Clone 🦴🎲</h1>
@@ -27,7 +30,10 @@ const Main = () => {
         ></iframe>
       </div>
       <div>
-        <button className="h-10 w-32 bg-red-800 rounded-lg text-white mt-4">
+        <button
+          className="h-10 w-32 bg-red-800 rounded-lg text-white mt-4"
+          onClick={() => navigate("/play")}
+        >
           Play
         </button>
       </div>
