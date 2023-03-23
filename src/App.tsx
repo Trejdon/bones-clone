@@ -167,7 +167,7 @@ const App = () => {
           </div>
         </div>
         {/* Game boards for both players */}
-        <div className="flex flex-col items-center justify-around bg-red-100">
+        <div className="flex flex-col items-center justify-around bg-yellow-100">
           <PlayerBoard
             inverted={true}
             player={playerOneData}
