@@ -10,7 +10,7 @@ import {
   sleep,
 } from "./gameUtils";
 
-import { MoveType, PlayerType, BoardType } from "./App";
+import { MoveType, PlayerType } from "./App";
 
 type GameProps = {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;

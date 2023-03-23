@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
 import Game from "./Game";
+import Main from "./Main";
 import Modal from "./Modal";
 
 export type MoveType = {
@@ -25,7 +26,8 @@ const App = () => {
 
   return (
     <div className="p-0 m-0 relative">
-      <Game setShowModal={setShowModal} setWinner={setWinner} />
+      <Main />
+      {/* <Game setShowModal={setShowModal} setWinner={setWinner} /> */}
       {showModal && (
         <Modal>
           <h2>{`${winner} wins!`}</h2>
