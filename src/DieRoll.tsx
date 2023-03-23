@@ -20,7 +20,7 @@ const DieRoll: FC<DieRollProps> = ({ roll, canRoll, handleRollDie }) => {
         {shouldDisplayRoll && (
           <img
             className="h-14 border-2 border-zinc-900 rounded-md bg-white"
-            src={`./images/${roll}.svg`}
+            src={`./${roll}.svg`}
             alt="die roll"
           />
         )}

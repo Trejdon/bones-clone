@@ -14,7 +14,7 @@ const Cell: FC<CellProps> = ({ value, count }) => {
       {!!value && (
         <img
           className={`h-14 border-2 border-zinc-900 rounded-md ${bgColor}`}
-          src={`./images/${value}.svg`}
+          src={`./${value}.svg`}
           alt="die roll"
         />
       )}
