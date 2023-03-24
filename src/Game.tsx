@@ -1,6 +1,7 @@
 import { FC, useState, useEffect } from "react";
 import PlayerBoard from "./PlayerBoard";
 import DieRoll from "./DieRoll";
+import Modal from "./Modal";
 import {
   calculateBoardScore,
   cancelOpponentBoard,
@@ -12,43 +13,67 @@ import {
 
 import { MoveType, PlayerType } from "./App";
 
-type GameProps = {
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setWinner: React.Dispatch<React.SetStateAction<string>>;
+const DEFAULT_PLAYER = {
+  id: "",
+  name: "",
+  isHuman: true,
+  board: [[]],
+  score: 0,
 };
 
-const Game: FC<GameProps> = ({ setShowModal, setWinner }) => {
+const Game: FC = () => {
   const [roll, setRoll] = useState<number>(0);
-  const [playerOneData, setPlayerOneData] = useState<PlayerType>({
-    id: self.crypto.randomUUID(),
-    name: "Player",
-    board: [
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-    ],
-    score: 0,
-    isHuman: true,
-  });
-  const [playerTwoData, setPlayerTwoData] = useState<PlayerType>({
-    id: self.crypto.randomUUID(),
-    name: "Computer",
-    board: [
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-    ],
-    score: 0,
-    isHuman: false,
-  });
-  const [status, setStatus] = useState(playerOneData.id);
+  const [playerOneData, setPlayerOneData] =
+    useState<PlayerType>(DEFAULT_PLAYER);
+  const [playerTwoData, setPlayerTwoData] =
+    useState<PlayerType>(DEFAULT_PLAYER);
+  const [status, setStatus] = useState("INIT");
   const [lastMove, setLastMove] = useState<MoveType | undefined>(undefined);
-
-  const PLAYERS = [playerOneData.id, playerTwoData.id];
+  const [showModal, setShowModal] = useState(false);
+  const [winner, setWinner] = useState("");
+  const [players, setPlayers] = useState<string[]>(["", ""]);
 
   const handleRollDie = (): void => {
     setRoll(rollDie());
   };
+
+  const initializeGame = () => {
+    const p1ID = self.crypto.randomUUID();
+    const p2ID = self.crypto.randomUUID();
+    setRoll(0);
+    setLastMove(undefined);
+    setWinner("");
+    setShowModal(false);
+    setPlayerOneData({
+      id: p1ID,
+      name: "Player",
+      board: [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+      ],
+      score: 0,
+      isHuman: true,
+    });
+    setPlayerTwoData({
+      id: p2ID,
+      name: "Computer",
+      board: [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+      ],
+      score: 0,
+      isHuman: false,
+    });
+    const PLAYERS = [p1ID, p2ID];
+    setPlayers(PLAYERS);
+    setStatus(PLAYERS[coinFlip(0, 1)]);
+  };
+
+  useEffect(() => {
+    initializeGame();
+  }, []);
 
   useEffect(() => {
     if (status === "PROCESSING") {
@@ -103,7 +128,7 @@ const Game: FC<GameProps> = ({ setShowModal, setWinner }) => {
       } else {
         // Update status for next player turn
         setRoll(0);
-        setStatus(PLAYERS.filter((player) => player !== lastMove.playerId)[0]);
+        setStatus(players.filter((player) => player !== lastMove.playerId)[0]);
       }
     }
 
@@ -125,7 +150,7 @@ const Game: FC<GameProps> = ({ setShowModal, setWinner }) => {
 
         const dieRoll = rollDie();
         setRoll(dieRoll);
-        await sleep(3000);
+        await sleep(2500);
         setLastMove({
           playerId: playerTwoData.id,
           columnSelected: randColSelection,
@@ -185,6 +210,17 @@ const Game: FC<GameProps> = ({ setShowModal, setWinner }) => {
           <div className="">{playerTwoData.score}</div>
         </div>
       </div>
+      {showModal && (
+        <Modal>
+          <h2>{`${winner} wins!`}</h2>
+          <button
+            onClick={initializeGame}
+            className="h-10 w-32 bg-red-800 rounded-lg"
+          >
+            Play again
+          </button>
+        </Modal>
+      )}
     </div>
   );
 };
