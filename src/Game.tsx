@@ -164,21 +164,21 @@ const Game: FC = () => {
   }, [status]);
 
   return (
-    <div id="game" className="grid grid-cols-3 h-screen">
+    <div className="game-board">
       {/* Player one avatar, score, and dice roller */}
-      <div className="flex flex-col justify-start items-center my-12">
+      <div className="player-col">
         <DieRoll
           roll={roll}
           canRoll={status === playerOneData.id}
           handleRollDie={handleRollDie}
         />
-        <div className="border-4 border-red-600 w-1/2 text-4xl text-center my-4">
+        <div className="total-score">
           <div className="">{playerOneData.name}</div>
           <div className="">{playerOneData.score}</div>
         </div>
       </div>
       {/* Game boards for both players */}
-      <div className="flex flex-col items-center justify-around bg-yellow-100">
+      <div className="board-col">
         <PlayerBoard
           inverted={true}
           player={playerOneData}
@@ -199,13 +199,13 @@ const Game: FC = () => {
         />
       </div>
       {/* Player two avatar, score, and dice roller */}
-      <div className="flex flex-col-reverse items-center my-12">
+      <div className="player-col-rev">
         <DieRoll
           roll={roll}
           canRoll={status === playerTwoData.id}
           handleRollDie={handleRollDie}
         />
-        <div className="border-4 border-red-600 w-1/2 text-4xl text-center mx-auto my-4">
+        <div className="total-score">
           <div className="">{playerTwoData.name}</div>
           <div className="">{playerTwoData.score}</div>
         </div>
@@ -213,10 +213,7 @@ const Game: FC = () => {
       {showModal && (
         <Modal>
           <h2>{`${winner} wins!`}</h2>
-          <button
-            onClick={initializeGame}
-            className="h-10 w-32 bg-red-800 rounded-lg"
-          >
+          <button onClick={initializeGame} className="h-10 w-32 btn">
             Play again
           </button>
         </Modal>

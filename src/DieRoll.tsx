@@ -14,7 +14,7 @@ const DieRoll: FC<DieRollProps> = ({ roll, canRoll, handleRollDie }) => {
   return (
     <div
       id="die-roll"
-      className="w-1/2 mx-auto border-8 border-gray-400 rounded-sm h-32 flex flex-col justify-center items-center bg-slate-700"
+      className="w-1/2 mx-auto border-4 border-gray-400 rounded-lg h-28 flex flex-col justify-center items-center bg-slate-700"
     >
       <div id="roll" className={`text-4xl p-5 ${rollClass}`}>
         {shouldDisplayRoll && (
@@ -26,7 +26,7 @@ const DieRoll: FC<DieRollProps> = ({ roll, canRoll, handleRollDie }) => {
         )}
       </div>
       <button
-        className={`h-10 w-20 bg-red-800 rounded-lg ${buttonClass}`}
+        className={`h-10 w-20 btn ${buttonClass}`}
         onClick={handleRollDie}
       >
         Roll
