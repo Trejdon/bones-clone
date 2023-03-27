@@ -21,7 +21,7 @@ const Footer = () => {
             Source{" "}
             <img
               className="h-5 pb-1 inline-block "
-              src="./public/github-mark-white.svg"
+              src="./github-mark-white.svg"
               alt="github logo"
             />
           </a>

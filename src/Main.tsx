@@ -5,7 +5,7 @@ const Main = () => {
   return (
     <div className="bg-yellow-100 text-black h-screen flex flex-col gap-2 items-center mx-48">
       <div className="bg-black w-full flex justify-center h-40 border-b-red-800 border-b-8">
-        <img src="./public/bones-clone-logo.svg" alt="bones clone logo" />
+        <img src="./bones-clone-logo.svg" alt="bones clone logo" />
       </div>
       <div className="bg-slate-700 m-2 border-4 border-black text-white rounded-lg">
         <p className="m-4 px-24">
