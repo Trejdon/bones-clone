@@ -42,20 +42,18 @@ const BoardColumn: FC<BoardColumnProps> = ({
 
   return (
     <div className={`flex ${flexDir} items-center gap-2`}>
-      <div className="h-10 w-12 text-black text-2xl flex justify-center items-center">
-        {calculateColumnScore(column)}
-      </div>
-      <div className="grid grid-rows-3 gap-2 justify-center">
+      <div className="col-score">{calculateColumnScore(column)}</div>
+      <div className="cell-grid">
         {column.map((value, index) => {
           const count =
             column.filter((element) => element === value).length - 1;
           return <Cell value={value} count={count} key={index} />;
         })}
       </div>
-      <div className="h-12">
+      <div className="h-8">
         {showButton && (
           <button
-            className={`bg-red-800 h-10 w-20 rounded-lg ${hiddenClass}`}
+            className={`btn h-8 w-20 ${hiddenClass}`}
             onClick={() => handleColumnClick(columnIndex)}
           >
             +

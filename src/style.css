@@ -16,4 +16,60 @@
   .modal {
     @apply text-xl fixed top-1/2 left-1/2 w-5/12 max-w-[600] gap-2 h-28 max-h-[400] z-10 border-4 border-red-800 rounded-lg p-2 flex flex-col justify-center text-center items-center bg-slate-700 -translate-y-2/4 -translate-x-2/4;
   }
+
+  .btn {
+    @apply bg-red-800 hover:bg-red-900 rounded-lg;
+  }
+
+  .logo-container {
+    @apply bg-black w-full flex justify-center h-40 border-b-red-800 border-b-8;
+  }
+
+  .desc-container {
+    @apply bg-slate-700 m-2 border-4 border-black text-white rounded-lg;
+  }
+
+  .main-container {
+    @apply bg-yellow-100 text-black h-screen flex flex-col gap-2 items-center mx-48;
+  }
+
+  .vid-container {
+    @apply bg-slate-700 p-4 border-4 border-black text-white rounded-lg;
+  }
+
+  .footer-container {
+    @apply fixed left-0 bottom-0 right-0 bg-black p-1 border-t-4 border-red-800;
+  }
+
+  .footer-list {
+    @apply list-none flex justify-around items-center text-white text-lg;
+  }
+
+  .game-board {
+    @apply grid grid-cols-3 h-screen;
+  }
+
+  .player-col {
+    @apply flex flex-col justify-start items-center my-20;
+  }
+
+  .player-col-rev {
+    @apply flex flex-col-reverse items-center my-20;
+  }
+
+  .board-col {
+    @apply flex flex-col items-center justify-around bg-yellow-100;
+  }
+
+  .col-score {
+    @apply h-10 w-12 text-black text-2xl flex justify-center items-center;
+  }
+
+  .cell-grid {
+    @apply grid grid-rows-3 gap-1 justify-center;
+  }
+
+  .total-score {
+    @apply border-4 border-red-800 rounded-lg w-1/2 h-32 flex flex-col justify-evenly text-3xl text-center mx-auto my-4;
+  }
 }
