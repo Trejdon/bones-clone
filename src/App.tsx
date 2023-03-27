@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Footer from "./Footer";
 import Game from "./Game";
 import Main from "./Main";
-
 
 export type MoveType = {
   playerId: string;
@@ -23,12 +23,13 @@ export type PlayerType = {
 
 const App = () => {
   return (
-    <div className="p-0 m-0 relative">
+    <div className="p-0 m-0 box-border">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/play" element={<Game />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </div>
   );
