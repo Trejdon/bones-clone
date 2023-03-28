@@ -1,4 +1,5 @@
 import { FC, useState, useEffect } from "react";
+import useSound from "use-sound";
 import PlayerBoard from "./PlayerBoard";
 import DieRoll from "./DieRoll";
 import Modal from "./Modal";
@@ -10,6 +11,7 @@ import {
   rollDie,
   sleep,
 } from "./gameUtils";
+import rollSfx from "/sounds/dice_roll.mp3";
 
 import { MoveType, PlayerType } from "./App";
 
@@ -32,9 +34,11 @@ const Game: FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [winner, setWinner] = useState("");
   const [players, setPlayers] = useState<string[]>(["", ""]);
+  const [play] = useSound(rollSfx);
 
   const handleRollDie = (): void => {
     setRoll(rollDie());
+    play();
   };
 
   const initializeGame = () => {
@@ -148,9 +152,11 @@ const Game: FC = () => {
           3
         );
 
+        await sleep(500);
         const dieRoll = rollDie();
         setRoll(dieRoll);
-        await sleep(2500);
+        play();
+        await sleep(2000);
         setLastMove({
           playerId: playerTwoData.id,
           columnSelected: randColSelection,
@@ -165,7 +171,6 @@ const Game: FC = () => {
 
   return (
     <div className="game-board">
-      {/* Player one avatar, score, and dice roller */}
       <div className="player-col">
         <DieRoll
           roll={roll}
