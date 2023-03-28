@@ -1,4 +1,6 @@
 import { FC } from "react";
+import 'animate.css';
+
 
 type DieRollProps = {
   roll: number;
@@ -19,7 +21,7 @@ const DieRoll: FC<DieRollProps> = ({ roll, canRoll, handleRollDie }) => {
       <div id="roll" className={`text-4xl p-5 ${rollClass}`}>
         {shouldDisplayRoll && (
           <img
-            className="h-14 border-2 border-zinc-900 rounded-md bg-white"
+            className="h-14 inline-block border-2 border-zinc-900 rounded-md bg-white animate__animated animate__rollIn"
             src={`./${roll}.svg`}
             alt="die roll"
           />

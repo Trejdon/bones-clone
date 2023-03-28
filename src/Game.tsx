@@ -152,7 +152,7 @@ const Game: FC = () => {
           3
         );
 
-        await sleep(500)
+        await sleep(500);
         const dieRoll = rollDie();
         setRoll(dieRoll);
         play();
